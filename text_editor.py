@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTextEdit, QAction, QVBoxLayout, QWidget, QPushButton, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTextEdit, QAction, QVBoxLayout, QWidget, QPushButton, QMessageBox, QFileDialog, QFontDialog
 
 
 class TextEditor(QMainWindow):
@@ -36,6 +36,10 @@ class TextEditor(QMainWindow):
         self.exitAction.setShortcut("Ctrl+Q")
         self.exitAction.triggered.connect(self.close)
 
+        self.fontAction = QAction("&Змінити шрифт", self)
+        self.fontAction.setShortcut("Ctrl+F")
+        self.fontAction.triggered.connect(self.changeFont)
+
     def createMenus(self):
         menubar = self.menuBar()
 
@@ -45,12 +49,19 @@ class TextEditor(QMainWindow):
         fileMenu.addAction(self.saveAction)
         fileMenu.addAction(self.exitAction)
 
+        formatMenu = menubar.addMenu("&Формат")
+        formatMenu.addAction(self.fontAction)
+
     def createToolBar(self):
         toolbar = self.addToolBar("Засоби")
 
         toolbar.addAction(self.newAction)
         toolbar.addAction(self.openAction)
         toolbar.addAction(self.saveAction)
+
+        fontButton = QPushButton("Шрифт", self)
+        fontButton.clicked.connect(self.changeFont)
+        toolbar.addWidget(fontButton)
 
     def newFile(self):
         self.textEdit.clear()
@@ -70,6 +81,11 @@ class TextEditor(QMainWindow):
             with open(filename, "w") as file:
                 text = self.textEdit.toPlainText()
                 file.write(text)
+
+    def changeFont(self):
+        font, ok = QFontDialog.getFont()
+        if ok:
+            self.textEdit.setFont(font)
 
 
 if __name__ == "__main__":
