@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTextEdit, QAction, QPushButton, QFileDialog, QFontDialog, QColorDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QTextEdit, QPushButton, QFileDialog, QFontDialog, QColorDialog
 
 
 class TextEditorModel:
@@ -34,7 +34,7 @@ class TextEditorController:
         filename, _ = QFileDialog.getOpenFileName(self.view, "Відкрити файл", "", "Text files (*.txt);;All files (*.*)")
         if filename:
             self.model.load_text(filename)
-            self.view.text_edit.setText(self.model.text)
+            self.view.text_edit.setPlainText(self.model.text)
 
     def save_file(self):
         filename, _ = QFileDialog.getSaveFileName(self.view, "Зберегти файл", "", "Text files (*.txt);;All files (*.*)")
@@ -93,4 +93,4 @@ if __name__ == "__main__":
     model = TextEditorModel()
     controller = TextEditorController(view, model)
     view.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
